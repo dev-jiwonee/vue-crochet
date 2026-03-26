@@ -8,6 +8,7 @@ const total = ref(0);
 // 작품 저장 배열, 초기엔 빈 배열
 const crochets = ref(JSON.parse(localStorage.getItem("crochets")) || []);
 
+// 작품 추가
 const addCrochet = () => {
   if (!name.value || !total.value) return;
 
@@ -21,14 +22,31 @@ const addCrochet = () => {
   crochets.value.push(newCrochet);
 
   // localStorage에 저장
-  localStorage.setItem("crochets", JSON.stringify(crochets.value));
+  saveCrochets();
 
   // 초기화
   name.value = "";
   total.value = 0;
 };
 
-// 배열 초기화
+const incRow = (id) => {
+  const item = crochets.value.find((c) => c.id === id);
+  if (item.current == item.total) return;
+  item.current++;
+  saveCrochets();
+};
+
+const decRow = (id) => {
+  const item = crochets.value.find((c) => c.id === id);
+  if (item.current > 0) item.current--;
+  saveCrochets();
+};
+
+const saveCrochets = () => {
+  localStorage.setItem("crochets", JSON.stringify(crochets.value));
+};
+
+// 전체 목록초기화
 const resetCrochet = () => {
   localStorage.removeItem("crochets");
   crochets.value = [];
@@ -45,6 +63,8 @@ const resetCrochet = () => {
   <ul>
     <li v-for="p in crochets" :key="p.id">
       {{ p.name }} {{ p.current }} / {{ p.total }}
+      <button @click="decRow(p.id)" :disabled="p.current == 0">-</button>
+      <button @click="incRow(p.id)" :disabled="p.total == p.current">+</button>
     </li>
   </ul>
   <button @click="resetCrochet">초기화</button>
