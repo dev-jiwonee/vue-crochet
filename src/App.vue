@@ -1,4 +1,5 @@
 <script setup>
+import dayjs from "dayjs";
 import { ref } from "vue";
 
 // 작품명, 전체 단수
@@ -65,6 +66,7 @@ const resetCrochet = () => {
       {{ p.name }} {{ p.current }} / {{ p.total }}
       <button @click="decRow(p.id)" :disabled="p.current == 0">-</button>
       <button @click="incRow(p.id)" :disabled="p.total == p.current">+</button>
+      {{ dayjs(p.createdAt).format("YYYY-MM-DD HH:mm") }}
     </li>
   </ul>
   <button @click="resetCrochet">초기화</button>
