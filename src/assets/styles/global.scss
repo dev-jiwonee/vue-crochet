@@ -1,0 +1,6 @@
+@use './reset.scss';
+@use './variables.scss' as *;
+
+body {
+  background: $bg-color;
+}
