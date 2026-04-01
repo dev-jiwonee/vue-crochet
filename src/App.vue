@@ -186,13 +186,15 @@ const validateRow = (e) => {
           </div>
         </div>
         <!-- 목록 -->
-        <p class="title">전체 뜨개 목록</p>
+        <div class="card-title">
+          <p class="title">전체 뜨개 목록</p>
+        </div>
         <ul class="card-list">
           <li
             v-for="p in crochets"
             :key="p.id"
             @click="selectRow(p.id)"
-            :class="{ active: selectedId === p.id }"
+            :class="['card', { active: selectedId === p.id }]"
           >
             <div class="card__top">
               <p class="name">{{ p.name }}</p>
@@ -385,55 +387,56 @@ const validateRow = (e) => {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  li {
+  li.card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     padding: 12px;
-    border: 2px solid #e5dace;
-    border-radius: 16px;
+    border-color: $border-secondary;
     cursor: pointer;
-    &.active {
-      background: #f9f9f370;
-      border: 2px solid #9fb8a6;
-    }
-    &:hover {
-      background: #e5dace2c;
-    }
     .card__top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
-      .name {
-        color: #7a6a5c;
-      }
-      .percent {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 48px;
-        height: 24px;
-        padding: 12px 0;
-        background: #e8cfc1;
-        font-size: 14px;
-        color: #7a6a5c;
-        border-radius: 24px;
-      }
     }
     .card__bottom {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #9fb8a6;
+    }
+    .percent {
+      padding: 4px 10px;
+      border-radius: 30px;
+      background: $accent-peach-light;
+    }
+    .count {
+      color: $accent-peach;
+    }
+    .progress {
+      flex: 1;
+      height: 4px;
+      .progress-bar {
+        background: $accent-peach;
+      }
+    }
+    &.active {
+      background: $white;
+      border-color: $accent-primary;
+      .percent {
+        background: $accent-secondary;
+        color: $accent-dark;
+      }
+      .count {
+        color: $accent-primary;
+      }
       .progress {
-        flex: 1;
-        height: 4px;
-        background: #eaeaea;
-        border-radius: 10px;
-        overflow: hidden;
         .progress-bar {
-          height: 100%;
-          background: #9fb8a6;
+          background: $accent-primary;
         }
       }
+    }
+    &:not(.active):hover {
+      background: #e5dace2c;
     }
   }
 }
