@@ -2,6 +2,7 @@
 import dayjs from "dayjs";
 import { computed, ref } from "vue";
 import IconTrash from "./components/icons/IconTrash.vue";
+import IconReset from "./components/icons/IconReset.vue";
 
 // 작품명, 전체 단수
 const name = ref("");
@@ -216,8 +217,11 @@ const validateRow = (e) => {
           </li>
         </ul>
         <!-- 초기화 버튼 -->
-        <div class="reset">
-          <button @click="resetCrochet" class="button-resetAll">
+        <div class="button-reset">
+          <button @click="resetCrochet">
+            <i>
+              <IconReset />
+            </i>
             전체 초기화
           </button>
         </div>
@@ -440,10 +444,28 @@ const validateRow = (e) => {
     }
   }
 }
+.button-reset {
+  @include flex-center;
+  padding: 30px 0;
+  button {
+    @include flex-center;
+    gap: 4px;
+    padding: 12px 18px;
+    border: 1px solid $accent-primary;
+    border-radius: 16px;
+    color: $accent-primary;
+    background: $bg-color;
+    transition: all 0.2s ease;
+    i {
+      font-size: 0;
+    }
+    &:hover {
+      background: $accent-primary;
+      color: $bg-color;
+    }
+  }
+}
 .reset {
-  display: flex;
-  justify-content: center;
-  padding: 12px 0;
   .button-resetAll {
     padding: 12px 18px;
     border: 2px solid #b7cfc3;
