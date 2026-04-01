@@ -1,13 +1,27 @@
+// 배경색
 $bg-color: #fff9f1;
+$bg-secondary: #f9f4ed;
+$bg-input: #fffbf5;
+
+// 텍스트
+$text-primary: #5c4a3d;
+$text-muted: #8d7d6f;
+$text-footer: #a08877;
+
+$accent-dark: #4f6f64;
+$accent-primary: #9fb8a6;
+$accent-secondary: #c5dccf;
+$accent-secondary-hover: #b6d3c4;
+
+$accent-peach: #ddb89f;
+$accent-peach-light: #f5e8dc;
+
+$border-primary: #d4c4b3;
+$border-secondary: #ddd0c2;
+
+$progress-bg: #e1e6e3;
+
+$white: #fff;
 
 // font-size
 $fs-xs: 12px;
-
-$text-primary: #5C4A3D;
-$text-muted: #8D7D6F;
-$text-footer: #a08877; 
-
-$accent-primary: #9fb8a6; 
-$accent-secondary: #c5dccf;
-
-$progress-bg: #d8d8d8;  

@@ -6,6 +6,8 @@ import { computed, ref } from "vue";
 const name = ref("");
 const total = ref(0);
 
+const maxRow = ref(200);
+
 const selectedId = ref(null);
 const selectedItem = computed(() =>
   crochets.value.find((c) => c.id === selectedId.value),
@@ -70,17 +72,29 @@ const resetCrochet = () => {
   localStorage.removeItem("crochets");
   crochets.value = [];
 };
+
+const validateRow = (e) => {
+  let value = Number(e.target.value);
+
+  if (!value || value <= 0) {
+    value = 0;
+  } else if (value >= maxRow.value) {
+    value = maxRow.value;
+  }
+
+  total.value = Number(value);
+};
 </script>
 
 <template>
   <div class="container">
     <header>
-      <p>好きなものを編もう！</p>
       <h1>오늘의 뜨개질</h1>
+      <p>好きなものを編もう！</p>
     </header>
     <main>
       <!-- 작품 추가 -->
-      <div class="card-add">
+      <div class="card card-add">
         <div class="card__input">
           <div class="input input__name">
             <label for="name">작품명</label>
@@ -98,8 +112,11 @@ const resetCrochet = () => {
               id="total"
               type="number"
               v-model="total"
+              placeholder="몇 단까지 떠볼까 ?"
               min="0"
-              placeholder="단수"
+              :max="maxRow"
+              @focus="$event.target.select()"
+              @blur="validateRow"
             />
           </div>
         </div>
@@ -213,30 +230,33 @@ const resetCrochet = () => {
 <style lang="scss">
 .card-add {
   display: flex;
-  gap: 24px;
   align-items: center;
+  gap: 24px;
   margin-bottom: 10px;
   padding: 16px;
-  border: 1px solid #ede3d7;
-  border-radius: 16px;
+  background: $bg-secondary;
   .card__input {
     flex: 1;
     .input {
       display: flex;
       align-items: center;
-      gap: 4px;
+      column-gap: 8px;
       label {
+        flex-shrink: 0;
         display: inline-block;
         width: 36px;
       }
       input {
         width: 100%;
         padding: 10px;
-        border: 1px solid #e5dace;
+        border: 1px solid $border-secondary;
         border-radius: 10px;
-        background: #fffdf9;
+        background: $bg-input;
         &::placeholder {
-          color: #d6b8a9;
+          color: $accent-peach;
+        }
+        &:focus {
+          border-color: $border-secondary;
         }
       }
       &__name {
@@ -246,11 +266,19 @@ const resetCrochet = () => {
   }
   .card__button {
     padding: 10px 14px;
-    background: #cfe3d4;
-    border-radius: 10px;
-    color: #5c4a3d;
+    border-radius: 12px;
+    background: $accent-secondary;
+    color: $accent-dark;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover,
+    &:focus {
+      background: $accent-secondary-hover;
   }
 }
+}
+
 .card-title {
   padding-top: 12px;
   margin-bottom: 10px;
