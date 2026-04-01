@@ -42,7 +42,7 @@ footer {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
-    color: $text-footer;
+  color: $text-footer;
   p {
     font-size: 14px;
   }
@@ -52,15 +52,29 @@ footer {
 }
 
 main {
-  padding:  10px 0;
+  padding: 10px 0;
 }
 
 button {
+  cursor: pointer;
+  transition: background-color 0.2s;
   touch-action: manipulation;
   user-select: none;
 }
 
+.progress {
+  width: 100%;
+  background: $progress-bg;
+  border-radius: 20px;
+  overflow: hidden;
+  .progress-bar {
+    transition: width 0.2s;
+    height: 100%;
+  }
+}
+
 .card {
-  border: 2px solid $border-primary;
+  border-width: 2px;
+  border-style: solid;
   border-radius: 16px;
 }
