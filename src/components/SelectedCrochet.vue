@@ -59,7 +59,7 @@ const emit = defineEmits(["inc", "dec", "del"]);
     </div>
   </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .card-now {
   display: flex;
   flex-direction: column;

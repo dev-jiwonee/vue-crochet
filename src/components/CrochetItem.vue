@@ -22,7 +22,7 @@ const { crochet, active } = defineProps(["crochet", "active"]);
     </div>
   </button>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .card {
   width: 100%;
   display: flex;

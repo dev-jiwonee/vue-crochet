@@ -61,12 +61,11 @@ const validateRow = (e) => {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .card-add {
   display: flex;
   align-items: center;
   gap: 24px;
-  // margin-bottom: 10px;
   padding: 16px;
   border-color: $border-primary;
   background: $bg-secondary;

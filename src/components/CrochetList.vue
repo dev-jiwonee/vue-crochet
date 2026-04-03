@@ -20,7 +20,7 @@ const emit = defineEmits(["select"]);
     </ul>
   </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .card-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
