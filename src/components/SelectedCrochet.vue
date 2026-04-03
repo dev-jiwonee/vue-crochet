@@ -6,53 +6,55 @@ const { crochet } = defineProps(["crochet"]);
 const emit = defineEmits(["inc", "dec", "del"]);
 </script>
 <template>
-  <div class="card-title">
-    <p class="title">현재 작업 중</p>
-  </div>
-  <div class="card card-now">
-    <div class="card-now__top">
-      <div class="card__text">
-        <p class="name">{{ crochet.name }}</p>
-        <div class="card__text-count">
-          <p class="row">{{ crochet.current }} / {{ crochet.total }}</p>
-          <div class="percent">
-            {{ Math.round((crochet.current / crochet.total) * 100) + "%" }}
+  <div>
+    <div class="card-title">
+      <p class="title">현재 작업 중</p>
+    </div>
+    <div class="card card-now">
+      <div class="card-now__top">
+        <div class="card__text">
+          <p class="name">{{ crochet.name }}</p>
+          <div class="card__text-count">
+            <p class="row">{{ crochet.current }} / {{ crochet.total }}</p>
+            <div class="percent">
+              {{ Math.round((crochet.current / crochet.total) * 100) + "%" }}
+            </div>
           </div>
         </div>
+        <div class="card__buttons">
+          <button @click="emit('del', crochet.id)">
+            <IconTrash />
+          </button>
+        </div>
       </div>
-      <div class="card__buttons">
-        <button @click="emit('del', crochet.id)">
-          <IconTrash />
-        </button>
+      <div class="card-now__progress">
+        <div class="progress">
+          <div
+            class="progress-bar"
+            :style="{
+              width: (crochet.current / crochet.total) * 100 + '%',
+            }"
+          ></div>
+        </div>
       </div>
-    </div>
-    <div class="card-now__progress">
-      <div class="progress">
-        <div
-          class="progress-bar"
-          :style="{
-            width: (crochet.current / crochet.total) * 100 + '%',
-          }"
-        ></div>
-      </div>
-    </div>
-    <div class="card-now__bottom">
-      <p>
-        {{ dayjs(crochet.createdAt).format("YYYY.MM.DD HH:mm") }}
-      </p>
-      <div class="card__buttons">
-        <button
-          @click="emit('dec', crochet.id)"
-          :disabled="crochet.current == 0"
-        >
-          -
-        </button>
-        <button
-          @click="emit('inc', crochet.id)"
-          :disabled="crochet.current == crochet.total"
-        >
-          +
-        </button>
+      <div class="card-now__bottom">
+        <p>
+          {{ dayjs(crochet.createdAt).format("YYYY.MM.DD HH:mm") }}
+        </p>
+        <div class="card__buttons">
+          <button
+            @click="emit('dec', crochet.id)"
+            :disabled="crochet.current == 0"
+          >
+            -
+          </button>
+          <button
+            @click="emit('inc', crochet.id)"
+            :disabled="crochet.current == crochet.total"
+          >
+            +
+          </button>
+        </div>
       </div>
     </div>
   </div>

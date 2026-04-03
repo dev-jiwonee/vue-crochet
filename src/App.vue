@@ -3,7 +3,6 @@ import { computed, ref } from "vue";
 import IconReset from "./components/icons/IconReset.vue";
 import AddCrochet from "./components/AddCrochet.vue";
 import SelectedCrochet from "./components/SelectedCrochet.vue";
-import CrochetItem from "./components/CrochetItem.vue";
 import CrochetList from "./components/CrochetList.vue";
 
 // 작품 저장 배열, 초기엔 빈 배열
@@ -73,7 +72,6 @@ const resetCrochet = () => {
     <main>
       <!-- 작품 추가 -->
       <AddCrochet @add-crochet="addCrochet" />
-
       <div v-if="crochets.length > 0">
         <!-- 선택 작품 -->
         <SelectedCrochet
