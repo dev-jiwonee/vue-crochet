@@ -3,41 +3,28 @@ import dayjs from "dayjs";
 import { computed, ref } from "vue";
 import IconTrash from "./components/icons/IconTrash.vue";
 import IconReset from "./components/icons/IconReset.vue";
+import AddCrochet from "./components/AddCrochet.vue";
 
-// 작품명, 전체 단수
-const name = ref("");
-const total = ref(0);
-
-const maxRow = ref(200);
-
+// 작품 저장 배열, 초기엔 빈 배열
+const crochets = ref(JSON.parse(localStorage.getItem("crochets")) || []);
 const selectedId = ref(null);
 const selectedItem = computed(() =>
   crochets.value.find((c) => c.id === selectedId.value),
 );
 
-// 작품 저장 배열, 초기엔 빈 배열
-const crochets = ref(JSON.parse(localStorage.getItem("crochets")) || []);
-
 // 작품 추가
-const addCrochet = () => {
-  if (!name.value || !total.value) return;
-
+const addCrochet = ({ name, total }) => {
   const newCrochet = {
     id: Date.now(),
-    name: name.value,
+    name,
     current: 0,
-    total: Number(total.value),
+    total,
     createdAt: Date.now(),
   };
   crochets.value.push(newCrochet);
 
   // localStorage에 저장
   saveCrochets();
-
-  // 초기화
-  name.value = "";
-  total.value = 0;
-
   selectRow(newCrochet.id);
 };
 
@@ -74,18 +61,6 @@ const resetCrochet = () => {
   localStorage.removeItem("crochets");
   crochets.value = [];
 };
-
-const validateRow = (e) => {
-  let value = Number(e.target.value);
-
-  if (!value || value <= 0) {
-    value = 0;
-  } else if (value >= maxRow.value) {
-    value = maxRow.value;
-  }
-
-  total.value = Number(value);
-};
 </script>
 
 <template>
@@ -93,38 +68,10 @@ const validateRow = (e) => {
     <header>
       <h1>오늘의 뜨개질</h1>
       <p>好きなものを編もう！</p>
-      <p>version test</p>
     </header>
     <main>
       <!-- 작품 추가 -->
-      <div class="card card-add">
-        <div class="card__input">
-          <div class="input input__name">
-            <label for="name">작품명</label>
-            <input
-              id="name"
-              type="text"
-              v-model="name"
-              placeholder="어떤걸 만들어볼까?"
-              autocomplete="off"
-            />
-          </div>
-          <div class="input input__total">
-            <label for="total">단수</label>
-            <input
-              id="total"
-              type="number"
-              v-model="total"
-              placeholder="몇 단까지 떠볼까 ?"
-              min="0"
-              :max="maxRow"
-              @focus="$event.target.select()"
-              @blur="validateRow"
-            />
-          </div>
-        </div>
-        <button @click="addCrochet" class="card__button">만들기</button>
-      </div>
+      <AddCrochet @add-crochet="addCrochet" />
 
       <div v-if="crochets.length > 0">
         <!-- 선택 작품 -->
@@ -239,60 +186,6 @@ const validateRow = (e) => {
 </template>
 
 <style lang="scss">
-.card-add {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  // margin-bottom: 10px;
-  padding: 16px;
-  border-color: $border-primary;
-  background: $bg-secondary;
-  // background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='16' ry='16' stroke='%23D4C4B3FF' stroke-width='4' stroke-dasharray='10%2c 20' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
-  // border-radius: 16px;
-  .card__input {
-    flex: 1;
-    .input {
-      display: flex;
-      align-items: center;
-      column-gap: 8px;
-      label {
-        flex-shrink: 0;
-        display: inline-block;
-        width: 36px;
-      }
-      input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid $border-secondary;
-        border-radius: 10px;
-        background: $bg-input;
-        &::placeholder {
-          color: $accent-peach;
-        }
-        &:focus {
-          border-color: $border-secondary;
-        }
-      }
-      &__name {
-        margin-bottom: 10px;
-      }
-    }
-  }
-  .card__button {
-    padding: 10px 14px;
-    border-radius: 12px;
-    background: $accent-secondary;
-    color: $accent-dark;
-    cursor: pointer;
-    transition: background-color 0.2s;
-
-    &:hover,
-    &:focus {
-      background: $accent-secondary-hover;
-    }
-  }
-}
-
 .card-title {
   padding-top: 20px;
   margin-bottom: 8px;
