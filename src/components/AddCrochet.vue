@@ -31,36 +31,33 @@ const validateRow = (e) => {
 </script>
 
 <template>
-  <div>
-    <!-- 작품 추가 -->
-    <div class="card card-add">
-      <div class="card__input">
-        <div class="input input__name">
-          <label for="name">작품명</label>
-          <input
-            id="name"
-            type="text"
-            v-model="name"
-            placeholder="어떤걸 만들어볼까?"
-            autocomplete="off"
-          />
-        </div>
-        <div class="input input__total">
-          <label for="total">단수</label>
-          <input
-            id="total"
-            type="number"
-            v-model="total"
-            placeholder="몇 단까지 떠볼까 ?"
-            min="0"
-            :max="maxRow"
-            @focus="$event.target.select()"
-            @blur="validateRow"
-          />
-        </div>
+  <div class="card card-add">
+    <div class="card__input">
+      <div class="input input__name">
+        <label for="name">작품명</label>
+        <input
+          id="name"
+          type="text"
+          v-model="name"
+          placeholder="어떤걸 만들어볼까?"
+          autocomplete="off"
+        />
       </div>
-      <button @click="addCrochet" class="card__button">만들기</button>
+      <div class="input input__total">
+        <label for="total">단수</label>
+        <input
+          id="total"
+          type="number"
+          v-model="total"
+          placeholder="몇 단까지 떠볼까 ?"
+          min="0"
+          :max="maxRow"
+          @focus="$event.target.select()"
+          @blur="validateRow"
+        />
+      </div>
     </div>
+    <button @click="addCrochet" class="card__button">만들기</button>
   </div>
 </template>
 
