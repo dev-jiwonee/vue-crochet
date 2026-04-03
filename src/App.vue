@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import IconReset from "./components/icons/IconReset.vue";
 import AddCrochet from "./components/AddCrochet.vue";
 import SelectedCrochet from "./components/SelectedCrochet.vue";
@@ -11,6 +11,13 @@ const selectedId = ref(null);
 const selectedItem = computed(() =>
   crochets.value.find((c) => c.id === selectedId.value),
 );
+
+const loaded = ref(false);
+onMounted(() => {
+  document.fonts.ready.then(() => {
+    loaded.value = true;
+  });
+});
 
 // 작품 추가
 const addCrochet = ({ name, total }) => {
@@ -64,7 +71,7 @@ const resetCrochet = () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" :class="{ loaded }">
     <header>
       <h1>오늘의 뜨개질</h1>
       <p>好きなものを編もう！</p>
