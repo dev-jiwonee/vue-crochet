@@ -1,9 +1,8 @@
 <script setup>
-import dayjs from "dayjs";
 import { computed, ref } from "vue";
-import IconTrash from "./components/icons/IconTrash.vue";
 import IconReset from "./components/icons/IconReset.vue";
 import AddCrochet from "./components/AddCrochet.vue";
+import SelectedCrochet from "./components/SelectedCrochet.vue";
 
 // 작품 저장 배열, 초기엔 빈 배열
 const crochets = ref(JSON.parse(localStorage.getItem("crochets")) || []);
@@ -27,17 +26,22 @@ const addCrochet = ({ name, total }) => {
   saveCrochets();
   selectRow(newCrochet.id);
 };
-
+// 단 줄이기
 const incRow = (id) => {
   const item = crochets.value.find((c) => c.id === id);
   if (item.current == item.total) return;
   item.current++;
   saveCrochets();
 };
-
+// 단 늘리기
 const decRow = (id) => {
   const item = crochets.value.find((c) => c.id === id);
   if (item.current > 0) item.current--;
+  saveCrochets();
+};
+// 항목 삭제
+const deleteCrochet = (id) => {
+  crochets.value = crochets.value.filter((c) => c.id !== id);
   saveCrochets();
 };
 
@@ -49,11 +53,6 @@ const selectRow = (id) => {
 // 저장
 const saveCrochets = () => {
   localStorage.setItem("crochets", JSON.stringify(crochets.value));
-};
-// 항목 삭제
-const removeRow = (id) => {
-  crochets.value = crochets.value.filter((c) => c.id !== id);
-  saveCrochets();
 };
 
 // 전체 목록초기화
@@ -75,65 +74,13 @@ const resetCrochet = () => {
 
       <div v-if="crochets.length > 0">
         <!-- 선택 작품 -->
-        <div v-if="selectedItem">
-          <div class="card-title">
-            <p class="title">현재 작업 중</p>
-          </div>
-          <div class="card card-now">
-            <div class="card-now__top">
-              <div class="card__text">
-                <p class="name">{{ selectedItem.name }}</p>
-                <div class="card__text-count">
-                  <p class="row">
-                    {{ selectedItem.current }} / {{ selectedItem.total }}
-                  </p>
-                  <div class="percent">
-                    {{
-                      Math.round(
-                        (selectedItem.current / selectedItem.total) * 100,
-                      ) + "%"
-                    }}
-                  </div>
-                </div>
-              </div>
-              <div class="card__buttons">
-                <button @click="removeRow(selectedItem.id)">
-                  <IconTrash />
-                </button>
-              </div>
-            </div>
-            <div class="card-now__progress">
-              <div class="progress">
-                <div
-                  class="progress-bar"
-                  :style="{
-                    width:
-                      (selectedItem.current / selectedItem.total) * 100 + '%',
-                  }"
-                ></div>
-              </div>
-            </div>
-            <div class="card-now__bottom">
-              <p>
-                {{ dayjs(selectedItem.createdAt).format("YYYY.MM.DD HH:mm") }}
-              </p>
-              <div class="card__buttons">
-                <button
-                  @click="decRow(selectedItem.id)"
-                  :disabled="selectedItem.current == 0"
-                >
-                  -
-                </button>
-                <button
-                  @click="incRow(selectedItem.id)"
-                  :disabled="selectedItem.current == selectedItem.total"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SelectedCrochet
+          v-if="selectedItem"
+          :crochet="selectedItem"
+          @dec="decRow"
+          @inc="incRow"
+          @del="deleteCrochet"
+        />
         <!-- 목록 -->
         <div class="card-title">
           <p class="title">전체 뜨개 목록</p>
@@ -186,101 +133,6 @@ const resetCrochet = () => {
 </template>
 
 <style lang="scss">
-.card-title {
-  padding-top: 20px;
-  margin-bottom: 8px;
-  font-size: 24px;
-}
-.card-now {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px;
-  border-color: $accent-primary;
-  background: #f3faf699;
-  &__top {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    gap: 4px;
-    .card__text {
-      flex: 1;
-      padding: 4px 0;
-      .name {
-        margin-bottom: 4px;
-        font-size: 22px;
-      }
-      &-count {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        .row {
-          font-size: 24px;
-          letter-spacing: -0.05rem;
-        }
-        .percent {
-          padding: 4px 10px;
-          border-radius: 60px;
-          background: $accent-secondary;
-          color: $accent-dark;
-        }
-      }
-    }
-    .card__buttons {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      button {
-        @include flex-center;
-        width: 36px;
-        height: 36px;
-        border-radius: 36px;
-        background: inherit;
-        &:hover {
-          background: $bg-secondary;
-        }
-      }
-    }
-  }
-  &__progress {
-    .progress {
-      height: 8px;
-    }
-    .progress-bar {
-      background: $accent-primary;
-    }
-  }
-  &__bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    p {
-      font-size: 14px;
-      color: $text-muted;
-    }
-    .card__buttons {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    button {
-      @include flex-center;
-      width: 36px;
-      height: 36px;
-      border-radius: 36px;
-      background: $accent-secondary;
-      font-size: 24px;
-      color: $accent-dark;
-      &:not(:disabled):hover {
-        background: $accent-secondary-hover;
-      }
-      &:disabled {
-        opacity: 0.6;
-        cursor: default;
-      }
-    }
-  }
-}
 .card-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
