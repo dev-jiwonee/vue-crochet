@@ -66,7 +66,7 @@ onMounted(() => {
     </main>
     <footer>
       <p>© 2026 Jiwon Lee. All rights reserved.</p>
-      <a href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/dev-jiwonee/vue-crochet" target="_blank" rel="noopener noreferrer">GitHub</a>
     </footer>
   </div>
 </template>
