@@ -93,6 +93,7 @@ const validateRow = (e) => {
     <header>
       <h1>오늘의 뜨개질</h1>
       <p>好きなものを編もう！</p>
+      <p>version test</p>
     </header>
     <main>
       <!-- 작품 추가 -->
