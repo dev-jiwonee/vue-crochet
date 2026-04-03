@@ -3,6 +3,8 @@ import { computed, ref } from "vue";
 import IconReset from "./components/icons/IconReset.vue";
 import AddCrochet from "./components/AddCrochet.vue";
 import SelectedCrochet from "./components/SelectedCrochet.vue";
+import CrochetItem from "./components/CrochetItem.vue";
+import CrochetList from "./components/CrochetList.vue";
 
 // 작품 저장 배열, 초기엔 빈 배열
 const crochets = ref(JSON.parse(localStorage.getItem("crochets")) || []);
@@ -82,35 +84,11 @@ const resetCrochet = () => {
           @del="deleteCrochet"
         />
         <!-- 목록 -->
-        <div class="card-title">
-          <p class="title">전체 뜨개 목록</p>
-        </div>
-        <ul class="card-list">
-          <li
-            v-for="p in crochets"
-            :key="p.id"
-            @click="selectRow(p.id)"
-            :class="['card', { active: selectedId === p.id }]"
-          >
-            <div class="card__top">
-              <p class="name">{{ p.name }}</p>
-              <p class="percent">
-                {{ Math.round((p.current / p.total) * 100) + "%" }}
-              </p>
-            </div>
-            <div class="card__bottom">
-              <p class="count">{{ p.current }} / {{ p.total }}</p>
-              <div class="progress">
-                <div
-                  class="progress-bar"
-                  :style="{
-                    width: (p.current / p.total) * 100 + '%',
-                  }"
-                ></div>
-              </div>
-            </div>
-          </li>
-        </ul>
+        <CrochetList
+          :crochets="crochets"
+          :selectedId="selectedId"
+          @select="selectRow"
+        />
         <!-- 초기화 버튼 -->
         <div class="button-reset">
           <button @click="resetCrochet">
@@ -133,63 +111,6 @@ const resetCrochet = () => {
 </template>
 
 <style lang="scss">
-.card-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  li.card {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 12px;
-    border-color: $border-secondary;
-    cursor: pointer;
-    .card__top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .card__bottom {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .percent {
-      padding: 4px 10px;
-      border-radius: 30px;
-      background: $accent-peach-light;
-    }
-    .count {
-      color: $accent-peach;
-    }
-    .progress {
-      flex: 1;
-      height: 4px;
-      .progress-bar {
-        background: $accent-peach;
-      }
-    }
-    &.active {
-      background: $white;
-      border-color: $accent-primary;
-      .percent {
-        background: $accent-secondary;
-        color: $accent-dark;
-      }
-      .count {
-        color: $accent-primary;
-      }
-      .progress {
-        .progress-bar {
-          background: $accent-primary;
-        }
-      }
-    }
-    &:not(.active):hover {
-      background: #e5dace2c;
-    }
-  }
-}
 .button-reset {
   @include flex-center;
   padding: 30px 0;
@@ -209,15 +130,6 @@ const resetCrochet = () => {
       background: $accent-primary;
       color: $bg-color;
     }
-  }
-}
-.reset {
-  .button-resetAll {
-    padding: 12px 18px;
-    border: 2px solid #b7cfc3;
-    border-radius: 16px;
-    background: #fff6e9;
-    color: #5c7a6e;
   }
 }
 
